@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * @author EVER C.R
  */
-public class ExamenRepository {
+public interface ExamenRepository {
     List<Examen> findAll();
+
 }

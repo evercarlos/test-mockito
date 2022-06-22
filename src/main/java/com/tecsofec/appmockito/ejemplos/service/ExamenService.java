@@ -9,5 +9,4 @@ public interface ExamenService {
 
     Examen findExamenPorNombre(String nombre);
 
-
 }
