@@ -33,4 +33,12 @@ public class Examen {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public List<String> getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(List<String> preguntas) {
+        this.preguntas = preguntas;
+    }
 }
