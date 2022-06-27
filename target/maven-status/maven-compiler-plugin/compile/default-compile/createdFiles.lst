@@ -1,0 +1,6 @@
+com/tecsofec/appmockito/ejemplos/repository/ExamenRepositoryOtro.class
+com/tecsofec/appmockito/ejemplos/repository/PreguntaRepository.class
+com/tecsofec/appmockito/ejemplos/service/ExamenServiceImpl.class
+com/tecsofec/appmockito/ejemplos/model/Examen.class
+com/tecsofec/appmockito/ejemplos/repository/ExamenRepository.class
+com/tecsofec/appmockito/ejemplos/service/ExamenService.class

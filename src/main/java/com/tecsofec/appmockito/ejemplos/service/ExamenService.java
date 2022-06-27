@@ -13,4 +13,6 @@ public interface ExamenService {
 
     Examen findExamenPorNombreConPreguntas(String nombre);
 
+    Examen guardar(Examen examen);
+
 }
