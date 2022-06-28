@@ -10,7 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -108,9 +110,44 @@ class ExamenServiceImplTest {
         verify(preguntaRepository).findPreguntasPorExamenId(5L);
     }
 
+    /*@Test
+    void GuardarExmamen(){
+        Examen newExamen = Datos.EXAMEN;
+        newExamen.setPreguntas(Datos.PREGUNTAS);// Si se comentta no pasa
+
+        when(repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);// any: Cualquier tipo de examen
+        Examen  examen = service.guardar(newExamen);
+        assertNotNull(examen.getId());
+        assertEquals(8L,examen.getId());
+        assertEquals("Fisica", examen.getNombre());
+
+        verify(repository).guardar(any(Examen.class));
+        verify(preguntaRepository).guardarVarias(anyList());
+    }*/
     @Test
     void GuardarExmamen(){
-        when(repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);// any: Cualquier tipo de examen
-        Examen  examen = service.guardar(Datos.EXAMEN);
+        // Given
+        Examen newExamen = Datos.EXAMEN;
+        newExamen.setPreguntas(Datos.PREGUNTAS);// Si se comentta no pasa
+
+        when(repository.guardar(any(Examen.class))).then(new Answer<Examen>(){
+
+            Long secuencia = 8L;
+
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+               Examen examen = invocation.getArgument(0);
+               examen.setId(secuencia++);
+               return  examen;
+            }
+        });
+
+        Examen  examen = service.guardar(newExamen);
+        assertNotNull(examen.getId());
+        assertEquals(8L,examen.getId());
+        assertEquals("Fisica", examen.getNombre());
+
+        verify(repository).guardar(any(Examen.class));
+        verify(preguntaRepository).guardarVarias(anyList());
     }
 }
