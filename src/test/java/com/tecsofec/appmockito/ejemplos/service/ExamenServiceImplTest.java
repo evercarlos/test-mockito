@@ -126,7 +126,7 @@ class ExamenServiceImplTest {
         verify(preguntaRepository).guardarVarias(anyList());
     }*/
     @Test
-    void GuardarExmamen(){
+    void TestGuardarExmamen(){
         // Given
         Examen newExamen = Datos.EXAMEN;
         newExamen.setPreguntas(Datos.PREGUNTAS);// Si se comentta no pasa
@@ -264,6 +264,63 @@ class ExamenServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> {
            service.guardar(examen);
         });
+    }
+
+    @Test
+    void testDoAnswer(){
+        when(repository.findAll()).thenReturn(Datos.EXAMENES);
+        doAnswer(invocation -> {
+         Long id = invocation.getArgument(0);
+         return  id == 5L? Datos.PREGUNTAS: Collections.emptyList();//null;
+        }).when(preguntaRepository).findPreguntasPorExamenId(anyLong());
+
+        Examen examen = service.findExamenPorNombreConPreguntas("Matematicas");
+        assertEquals(5, examen.getPreguntas().size());
+        assertTrue(examen.getPreguntas().contains("integrales"));
+        assertEquals(5L, examen.getId());
+        assertEquals("Matematicas", examen.getNombre());
+
+        verify(preguntaRepository).findPreguntasPorExamenId(anyLong());
+    }
+
+    @Test
+    void testDoAnswerGuardarExamen(){
+        // Given
+        Examen newExamen = Datos.EXAMEN;
+        newExamen.setPreguntas(Datos.PREGUNTAS);// Si se comentta no pasa
+
+        /*when(repository.guardar(any(Examen.class))).then(new Answer<Examen>(){
+
+            Long secuencia = 8L;
+
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+                Examen examen = invocation.getArgument(0);
+                examen.setId(secuencia++);
+                return  examen;
+            }
+        });*/
+        // usamos este metodo para el codigo comentado
+        doAnswer(new Answer<Examen>(){
+
+            Long secuencia = 8L;
+
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+                Examen examen = invocation.getArgument(0);
+                examen.setId(secuencia++);
+                return  examen;
+            }
+        }).when(repository).guardar(any(Examen.class));
+
+
+        Examen  examen = service.guardar(newExamen);
+        assertNotNull(examen.getId());
+        assertEquals(8L,examen.getId());
+        assertEquals("Fisica", examen.getNombre());
+
+        verify(repository).guardar(any(Examen.class));
+        verify(preguntaRepository).guardarVarias(anyList());
     }
 
 }
