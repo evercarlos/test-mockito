@@ -38,6 +38,9 @@ class ExamenServiceImplTest {
     @InjectMocks
     ExamenServiceImpl service;
 
+    @Captor
+    ArgumentCaptor<Long>captor;
+
     @BeforeEach
     void setUp() {
         //MockitoAnnotations.openMocks(this);
@@ -242,7 +245,7 @@ class ExamenServiceImplTest {
         when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
         service.findExamenPorNombreConPreguntas("Matematicas");
 
-        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+        //ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class); // Al definir al inicio @Captor se comenta aqui porque es lo mismo
         verify(preguntaRepository).findPreguntasPorExamenId(captor.capture());
 
         assertEquals(5L, captor.getValue());
